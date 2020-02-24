@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Comical</string>
+    <string name="comic_favicon_description">Icon for webcomic %1$s.</string>
+    <plurals name="duration_years_ago">
+        <item quantity="one">%d year ago</item>
+        <item quantity="other">%d years ago</item>
+    </plurals>
+    <plurals name="duration_months_ago">
+        <item quantity="one">%d month ago</item>
+        <item quantity="other">%d months ago</item>
+    </plurals>
+    <plurals name="duration_days_ago">
+        <item quantity="one">Yesterday</item>
+        <item quantity="other">%d days ago</item>
+    </plurals>
+    <string name="duration_today">Today</string>
+    <plurals name="duration_hours_ago">
+        <item quantity="one">%d hour ago</item>
+        <item quantity="other">%d hours ago</item>
+    </plurals>
+    <plurals name="duration_minutes_ago">
+        <item quantity="zero">Now</item>
+        <item quantity="one">%d minute ago</item>
+        <item quantity="other">%d minutes ago</item>
+    </plurals>
+
+</resources>

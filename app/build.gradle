@@ -1,0 +1,86 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
+android {
+    compileSdkVersion 29
+
+    defaultConfig {
+        applicationId "com.github.sidky.comical"
+        minSdkVersion 26
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+//        compose true
+        dataBinding true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    // Set both the Java and Kotlin compilers to target Java 8.
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+
+    implementation project(':auth')
+    implementation project(':common')
+    implementation project(':data')
+
+    implementation deps.dagger.dagger
+    kapt deps.dagger.compiler
+
+    implementation deps.kotlin.stdlib
+    implementation deps.kotlin.coroutine
+    implementation deps.kotlin.coroutineAndroid
+
+    kapt deps.lifecycle.compiler
+    implementation deps.lifecycle.runtime
+    implementation deps.lifecycle.viewmodel
+
+    implementation deps.navigation.fragment
+    implementation deps.navigation.ui
+
+    implementation deps.core.ktx
+    implementation deps.core.appcompat
+    implementation deps.core.cardview
+    implementation deps.core.constraintLayout
+    implementation deps.core.recyclerView
+
+    implementation deps.firebase.analytics
+    implementation deps.firebase.auth
+    implementation deps.firebase.firestore
+
+    implementation deps.coil.coil
+
+    implementation deps.gms.auth
+
+    implementation deps.timber.timber
+
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+}

@@ -1,0 +1,101 @@
+ext.deps = [:]
+
+def versions = [:]
+versions.appcompat = '1.1.0'
+versions.androidxUI = '0.1.0-dev05'
+versions.cardview = '1.0.0'
+versions.coil = '0.9.5'
+versions.coroutine = '1.3.3'
+versions.dagger = '2.26'
+versions.constraintLayout = '2.0.0-beta4'
+versions.firebaseAuth = '19.2.0'
+versions.firebaseAnalytics = '17.2.2'
+versions.firestore = '21.4.0'
+versions.glide = '4.11.0'
+versions.gmsAuth = '17.0.0'
+versions.gmsService = '4.3.3'
+versions.koin = '2.0.1'
+versions.kotlin = '1.3.61'
+versions.ktx = '1.2.0'
+versions.lifecycle = '2.2.0'
+versions.navigation = '2.3.0-alpha02'
+versions.recyclerView = '1.1.0'
+versions.rxjava = '3.0.0'
+versions.rxandroid = '3.0.0'
+versions.timber = '4.7.1'
+
+def deps = [:]
+
+def core = [:]
+core.ktx = "androidx.core:core-ktx:${versions.ktx}"
+core.appcompat = "androidx.appcompat:appcompat:${versions.appcompat}"
+core.cardview = "androidx.cardview:cardview:${versions.cardview}"
+core.constraintLayout = "androidx.constraintlayout:constraintlayout:${versions.constraintLayout}"
+core.recyclerView = "androidx.recyclerview:recyclerview:${versions.recyclerView}"
+deps.core = core
+
+def coil = [:]
+coil.coil = "io.coil-kt:coil:${versions.coil}"
+deps.coil = coil
+
+def dagger = [:]
+dagger.compiler = "com.google.dagger:dagger-compiler:${versions.dagger}"
+dagger.dagger = "com.google.dagger:dagger:${versions.dagger}"
+deps.dagger = dagger
+
+def firebase = [:]
+firebase.analytics = "com.google.firebase:firebase-analytics:${versions.firebaseAnalytics}"
+firebase.auth = "com.google.firebase:firebase-auth:${versions.firebaseAuth}"
+firebase.firestore = "com.google.firebase:firebase-firestore:${versions.firestore}"
+deps.firebase = firebase
+
+def glide = [:]
+glide.glide = "com.github.bumptech.glide:glide:${versions.glide}"
+deps.glide = glide
+
+def gms = [:]
+gms.auth = "com.google.android.gms:play-services-auth:${versions.gmsAuth}"
+gms.service = "com.google.gms:google-services:${versions.gmsService}"
+deps.gms = gms
+
+def koin = [:]
+koin.android = "org.koin:koin-android:${versions.koin}"
+koin.scope = "org.koin:koin-androidx-scope:${versions.koin}"
+koin.viewmodel = "org.koin:koin-androidx-viewmodel:${versions.koin}"
+deps.koin = koin
+
+def kotlin = [:]
+kotlin.coroutine = "org.jetbrains.kotlinx:kotlinx-coroutines-core:${versions.coroutine}"
+kotlin.coroutineAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:${versions.coroutine}"
+kotlin.plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+kotlin.stdlib = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+deps.kotlin = kotlin
+
+def lifecycle = [:]
+lifecycle.compiler = "androidx.lifecycle:lifecycle-common-java8:${versions.lifecycle}"
+lifecycle.runtime = "androidx.lifecycle:lifecycle-runtime-ktx:${versions.lifecycle}"
+lifecycle.viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
+deps.lifecycle = lifecycle
+
+def navigation = [:]
+navigation.plugin = "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
+navigation.fragment = "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
+navigation.ui = "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
+deps.navigation = navigation
+
+def rxjava = [:]
+rxjava.rxjava = "io.reactivex.rxjava3:rxjava:${versions.rxjava}"
+rxjava.rxandroid = "io.reactivex.rxjava3:rxandroid:${versions.rxandroid}"
+deps.rxjava = rxjava
+
+def timber = [:]
+timber.timber = "com.jakewharton.timber:timber:${versions.timber}"
+deps.timber = timber
+
+def ui = [:]
+ui.tooling = "androidx.ui:ui-tooling:${versions.androidxUI}"
+ui.layout = "androidx.ui:ui-layout:${versions.androidxUI}"
+ui.material = "androidx.ui:ui-material:${versions.androidxUI}"
+deps.ui = ui
+
+ext.deps = deps

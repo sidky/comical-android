@@ -1,0 +1,5 @@
+include ':auth'
+include ':common'
+include ':data'
+include ':app'
+rootProject.name = "Comical"

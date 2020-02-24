@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.github.sidky.comical.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_publishersFragment"
+            app:destination="@id/publishersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/publishersFragment"
+        android:name="com.github.sidky.comical.publishers.PublishersFragment"
+        android:label="PublishersFragment" >
+        <action
+            android:id="@+id/action_publishersFragment_to_comicsFeedFragment"
+            app:destination="@id/comicsFeedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/comicsFeedFragment"
+        android:name="com.github.sidky.comical.comicsfeed.ComicsFeedFragment"
+        android:label="ComicsFeedFragment" >
+        <argument
+            android:name="id"
+            app:argType="string" />
+    </fragment>
+</navigation>
