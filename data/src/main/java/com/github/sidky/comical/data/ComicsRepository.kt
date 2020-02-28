@@ -12,4 +12,6 @@ class ComicsRepository @Inject constructor(private val store: ComicsFirestore) {
 
     @ExperimentalCoroutinesApi
     suspend fun pagedComicsFeed(id: String, pageSize: Int, bufferSize: Int, scope: CoroutineScope) = store.pagedFeed(scope, id, pageSize, bufferSize)
+
+    suspend fun feedUpdated(id: String, scope: CoroutineScope) = store.listenOnFeedUpdates(id, scope)
 }

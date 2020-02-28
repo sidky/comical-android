@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sidky.comical.R
 import com.github.sidky.comical.arch.ArchView
@@ -14,7 +15,13 @@ import com.github.sidky.comical.databinding.ItemComicsFeedBinding
 import com.github.sidky.comical.fragment.InjectLoggedIn
 import com.github.sidky.comical.fragment.InjectableFragment
 import com.github.sidky.comical.loggedin.LoggedInComponent
+import com.github.sidky.comical.util.LifecycleJobDisposable
 import com.github.sidky.comical.viewmodel.DaggerViewModelFactory
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import timber.log.Timber
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
 class ComicsFeedFragment: InjectableFragment(), InjectLoggedIn, ArchView<ComicsFeedInteractions, ComicsFeedPresenter> {
@@ -36,6 +43,10 @@ class ComicsFeedFragment: InjectableFragment(), InjectLoggedIn, ArchView<ComicsF
         ViewModelProvider(this, daggerViewModelFactory)
     }
 
+    private val disposable by lazy {
+        LifecycleJobDisposable(lifecycle)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,14 +60,45 @@ class ComicsFeedFragment: InjectableFragment(), InjectLoggedIn, ArchView<ComicsF
         return binding.root
     }
 
-    override fun completeInject(component: LoggedInComponent) {
-        component.comicsFeedComponent().get().withComicsFeedModule(ComicsFeedModule()).build().inject(this)
+    override fun onResume() {
+        super.onResume()
+
+        disposable.addUntilPause(register())
     }
 
+    override fun completeInject(component: LoggedInComponent) {
+        val arg = arguments
+        val parameter = if (arg != null) {
+            ComicsFeedFragmentArgs.fromBundle(arg)
+        } else {
+            throw IllegalArgumentException("No argument given to ComicsFeedFragment")
+        }
+        component.comicsFeedComponent().get()
+            .withParameter(parameter)
+            .withComicsFeedModule(ComicsFeedModule())
+            .build()
+            .inject(this)
+    }
+
+    @ExperimentalCoroutinesApi
     override fun presenter(): ComicsFeedPresenter =
         viewModelProvider.get(ComicsFeedPresenter::class.java)
 
     override fun event(event: ComicsFeedInteractions) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        when (event) {
+            is ComicsFeedInteractions.Feed -> {
+                event.feed.forEach { Timber.i(it.toString()) }
+                Timber.i("${event.feed.size} elements")
+                loadMore()
+            }
+        }
+    }
+
+    @ExperimentalCoroutinesApi
+    fun loadMore() {
+        lifecycleScope.launch {
+            delay(10000)
+            presenter().loadMore()
+        }
     }
 }

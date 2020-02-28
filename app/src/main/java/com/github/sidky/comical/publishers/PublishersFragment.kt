@@ -5,26 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sidky.comical.R
 import com.github.sidky.comical.arch.ArchView
 import com.github.sidky.comical.common.UI
-import com.github.sidky.comical.data.model.Publisher
 import com.github.sidky.comical.databinding.FragmentPublishersBinding
 import com.github.sidky.comical.fragment.InjectLoggedIn
 import com.github.sidky.comical.fragment.InjectableFragment
 import com.github.sidky.comical.loggedin.LoggedInComponent
-import com.github.sidky.comical.login.LoginFragment
 import com.github.sidky.comical.util.LifecycleJobDisposable
 import com.github.sidky.comical.viewmodel.DaggerViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 

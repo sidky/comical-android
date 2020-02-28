@@ -1,6 +1,7 @@
 package com.github.sidky.comical.data.firestore
 
 import com.github.sidky.comical.common.LoggedInScope
+import com.github.sidky.comical.data.model.FeedItem
 import com.github.sidky.comical.data.model.firestore.ComicsInfo
 import com.github.sidky.comical.data.model.firestore.Entry
 import com.github.sidky.comical.data.model.Publisher
@@ -75,7 +76,7 @@ class ComicsFirestore @Inject constructor(private val db: FirebaseFirestore) {
     }
 
     @ExperimentalCoroutinesApi
-    suspend fun pagedFeed(scope: CoroutineScope, id: String, pageSize: Int, buffer: Int = 0) = scope.produce<List<Entry>>(capacity = buffer) {
+    suspend fun pagedFeed(scope: CoroutineScope, id: String, pageSize: Int, buffer: Int = 0) = scope.produce<List<FeedItem>>(capacity = buffer) {
 
         var lastSnapshot: QuerySnapshot? = null
         var lastDocument: DocumentSnapshot? = null
@@ -102,13 +103,13 @@ class ComicsFirestore @Inject constructor(private val db: FirebaseFirestore) {
                 val snapshot = it.result
 
                 val result = if (it.isSuccessful && snapshot != null) {
-                    val entries = mutableListOf<Entry>()
+                    val entries = mutableListOf<FeedItem>()
                     val documents = it.result?.documents
 
                     for (document in documents ?: emptyList()) {
                         val entry = document.toObject(Entry::class.java)
                         if (entry != null) {
-                            entries.add(entry)
+                            entries.add(entry.toFeedItem())
                         } else {
                             Timber.e("Unable to parse entry: $document")
                         }
@@ -151,7 +152,7 @@ class ComicsFirestore @Inject constructor(private val db: FirebaseFirestore) {
     }
 
     private sealed class QueryResult {
-        class Success(val entries: List<Entry>, val lastDocument: DocumentSnapshot, val snapshot: QuerySnapshot): QueryResult()
+        class Success(val entries: List<FeedItem>, val lastDocument: DocumentSnapshot, val snapshot: QuerySnapshot): QueryResult()
         object Complete: QueryResult()
         class Failure(val ex: Exception?): QueryResult()
     }
