@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.github.sidky.comical.R
 import com.github.sidky.comical.arch.ArchView
@@ -24,6 +25,7 @@ import timber.log.Timber
 import java.lang.IllegalArgumentException
 import javax.inject.Inject
 
+@ExperimentalCoroutinesApi
 class ComicsFeedFragment: InjectableFragment(), InjectLoggedIn, ArchView<ComicsFeedInteractions, ComicsFeedPresenter> {
 
     @Inject
@@ -32,7 +34,7 @@ class ComicsFeedFragment: InjectableFragment(), InjectLoggedIn, ArchView<ComicsF
     lateinit var binding: FragmentComicsFeedBinding
 
     private val adapter: ComicsFeedAdapter by lazy {
-        ComicsFeedAdapter()
+        ComicsFeedAdapter(lifecycle, presenter())
     }
 
     private val layoutManager by lazy {
@@ -89,7 +91,14 @@ class ComicsFeedFragment: InjectableFragment(), InjectLoggedIn, ArchView<ComicsF
             is ComicsFeedInteractions.Feed -> {
                 event.feed.forEach { Timber.i(it.toString()) }
                 Timber.i("${event.feed.size} elements")
-                loadMore()
+
+                lifecycleScope.launch {
+                    adapter.updateItems(event.feed)
+                }
+            }
+            is ComicsFeedInteractions.Navigate -> {
+                val action = ComicsFeedFragmentDirections.actionComicsFeedFragmentToComicsItemFragment(event.feedId, event.comicsId)
+                findNavController().navigate(action)
             }
         }
     }

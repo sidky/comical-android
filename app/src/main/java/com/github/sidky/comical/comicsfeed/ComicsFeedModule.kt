@@ -13,6 +13,7 @@ import javax.inject.Provider
 
 @Module
 class ComicsFeedModule {
+    @ExperimentalCoroutinesApi
     @Provides
     @IntoMap
     @ViewModelKey(ComicsFeedPresenter::class)

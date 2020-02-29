@@ -17,6 +17,7 @@ import javax.inject.Inject
 
 sealed class ComicsFeedInteractions: BaseInteraction {
     data class Feed(val feed: List<FeedItem>, val isLoading: Boolean, val canRefresh: Boolean): ComicsFeedInteractions()
+    data class Navigate(val feedId: String, val comicsId: String): ComicsFeedInteractions()
     class Error(val message: String): ComicsFeedInteractions()
 }
 
@@ -25,7 +26,7 @@ sealed class ComicsFeedInteractions: BaseInteraction {
 class ComicsFeedPresenter @Inject constructor(
     private val parameter: ComicsFeedFragmentArgs,
     private val repository: ComicsRepository
-): ViewModel(), ArchPresenter<ComicsFeedInteractions> {
+): ViewModel(), ArchPresenter<ComicsFeedInteractions>, ComicsFeedClickListener {
 
     @GuardedBy("this")
     private val comicsFeed = mutableListOf<FeedItem>()
@@ -87,12 +88,6 @@ class ComicsFeedPresenter @Inject constructor(
                 }
 
                 dispatchFeedUpdate()
-
-//                if (!completeLoad) {
-//                    Timber.e("WAITING")
-//                    loadMore.receive()
-//                    Timber.e("WAITING COMPLETE")
-//                }
             }
         } catch (ex: CancellationException) {
             Timber.e("ComicsFeedPresenter channel cancelled")
@@ -126,6 +121,12 @@ class ComicsFeedPresenter @Inject constructor(
     }
 
     companion object {
-        val PAGE_SIZE = 1
+        val PAGE_SIZE = 10
+    }
+
+    override fun itemClicked(id: String) {
+        CoroutineScope(Dispatchers.Main).launch {
+            interactionChannel.send(ComicsFeedInteractions.Navigate(parameter.id, id))
+        }
     }
 }

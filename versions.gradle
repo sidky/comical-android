@@ -3,6 +3,7 @@ ext.deps = [:]
 def versions = [:]
 versions.appcompat = '1.1.0'
 versions.androidxUI = '0.1.0-dev05'
+versions.blur = '1.0.0'
 versions.cardview = '1.0.0'
 versions.coil = '0.9.5'
 versions.coroutine = '1.3.3'
@@ -97,5 +98,9 @@ ui.tooling = "androidx.ui:ui-tooling:${versions.androidxUI}"
 ui.layout = "androidx.ui:ui-layout:${versions.androidxUI}"
 ui.material = "androidx.ui:ui-material:${versions.androidxUI}"
 deps.ui = ui
+
+def v500px = [:]
+v500px.blur = "com.fivehundredpx:blurringview:${versions.blur}"
+deps.v500px = v500px
 
 ext.deps = deps

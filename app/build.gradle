@@ -79,6 +79,8 @@ dependencies {
 
     implementation deps.timber.timber
 
+    implementation deps.v500px.blur
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
     <data>
+        <variable name="id" type="String" />
         <variable name="title" type="String" />
         <variable name="src" type="String" />
         <variable name="description" type="String" />
         <variable name="lastUpdated" type="java.time.LocalDateTime" />
+        <variable name="clickListener" type="com.github.sidky.comical.comicsfeed.ComicsFeedClickListener" />
     </data>
     <androidx.cardview.widget.CardView
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="400dp"
+        card_view:cardElevation="8dp"
+        card_view:cardCornerRadius="5dp"
+        card_view:cardUseCompatPadding="true"
+        android:onClick="@{() -> clickListener.itemClicked(id)}">
 
         <ImageView
             android:id="@+id/comics_image"
@@ -22,7 +30,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_gravity="bottom">
+            android:layout_gravity="bottom"
+            android:background="#77555555"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/comics_title"

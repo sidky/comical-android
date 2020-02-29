@@ -1,6 +1,7 @@
 package com.github.sidky.comical.loggedin
 
 import com.github.sidky.comical.comicsfeed.ComicsFeedComponent
+import com.github.sidky.comical.comicsitem.ComicsItemComponent
 import com.github.sidky.comical.common.LoggedInScope
 import com.github.sidky.comical.data.StorageModule
 import com.github.sidky.comical.login.LoginFragment
@@ -15,6 +16,7 @@ interface LoggedInComponent {
 
     fun publishersComponent(): Provider<PublishersComponent.Builder>
     fun comicsFeedComponent(): Provider<ComicsFeedComponent.Builder>
+    fun comicsItemComponent(): Provider<ComicsItemComponent.Builder>
 
     @Subcomponent.Builder
     interface Builder {
