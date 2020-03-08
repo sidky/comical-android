@@ -39,8 +39,10 @@ fun untilDate(view: TextView, dateTime: LocalDateTime) {
 }
 
 @BindingAdapter("app:remoteSrc")
-fun remoteSrc(view: ImageView, url: String) {
-    view.load(url) {
+fun remoteSrc(view: ImageView, url: String?) {
+    if (url != null) {
+        view.load(url) {
 
+        }
     }
 }

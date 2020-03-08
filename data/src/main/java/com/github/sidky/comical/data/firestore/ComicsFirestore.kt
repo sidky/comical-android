@@ -21,20 +21,6 @@ import kotlin.coroutines.resumeWithException
 
 @LoggedInScope
 class ComicsFirestore @Inject constructor(private val db: FirebaseFirestore) {
-    suspend fun read() = suspendCancellableCoroutine<String> { t ->
-        db.collection("comics").document("xkcd").collection("entries").get()
-            .addOnSuccessListener { result ->
-                var s = ""
-                for (document in result) {
-                    val e = document.toObject(Entry::class.java)
-                    s += e
-                }
-                t.resumeWith(Result.success(s))
-            }
-            .addOnFailureListener {
-                t.resumeWithException(it)
-            }
-    }
 
     @ExperimentalCoroutinesApi
     suspend fun availables(scope: CoroutineScope) = channelFlow<List<Publisher>> {
@@ -151,17 +137,7 @@ class ComicsFirestore @Inject constructor(private val db: FirebaseFirestore) {
         }
     }
 
-    private sealed class QueryResult {
-        class Success(val entries: List<FeedItem>, val lastDocument: DocumentSnapshot, val snapshot: QuerySnapshot): QueryResult()
-        object Complete: QueryResult()
-        class Failure(val ex: Exception?): QueryResult()
-    }
-
-//        channelFlow<List<Entry>>() {
-//        referenceToComics(id).orderBy("published", Query.Direction.DESCENDING).
-//    }
-
-    suspend fun availableSubscriptions() = suspendCancellableCoroutine<List<ComicsInfo>> { t ->
+    suspend fun availableSubscriptions(): List<ComicsInfo> = suspendCancellableCoroutine { t ->
         db.collection("comics-info").whereEqualTo("enabled", true).get()
             .addOnSuccessListener { result ->
                 val comics = mutableListOf<ComicsInfo>()
@@ -174,6 +150,24 @@ class ComicsFirestore @Inject constructor(private val db: FirebaseFirestore) {
             .addOnFailureListener {
                 t.resumeWithException(it)
             }
+    }
+
+    suspend fun comicsItem(feedId: String, comicsId: String): FeedItem = suspendCancellableCoroutine { t ->
+        referenceToComics(feedId).whereEqualTo("id", comicsId).get()
+            .addOnSuccessListener {
+                val info = it.toObjects(Entry::class.java)[0]
+                t.resumeWith(Result.success(info.toFeedItem()))
+            }
+            .addOnFailureListener {
+                t.resumeWithException(it)
+            }
+//        referenceToComics(comicsId).whereEqualTo("")
+    }
+
+    private sealed class QueryResult {
+        class Success(val entries: List<FeedItem>, val lastDocument: DocumentSnapshot, val snapshot: QuerySnapshot): QueryResult()
+        object Complete: QueryResult()
+        class Failure(val ex: Exception?): QueryResult()
     }
 
     private fun referenceToComics(id: String) =

@@ -1,7 +1,14 @@
 package com.github.sidky.comical.comicsitem
 
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.github.sidky.comical.R
 import com.github.sidky.comical.arch.ArchView
+import com.github.sidky.comical.databinding.FragmentComicsItemBinding
 import com.github.sidky.comical.fragment.InjectLoggedIn
 import com.github.sidky.comical.fragment.InjectableFragment
 import com.github.sidky.comical.loggedin.LoggedInComponent
@@ -14,8 +21,19 @@ class ComicsItemFragment: InjectableFragment(), InjectLoggedIn, ArchView<ComicsI
     @Inject
     lateinit var daggerViewModelFactory: DaggerViewModelFactory
 
+    private lateinit var binding: FragmentComicsItemBinding
+
     private val disposable by lazy {
         LifecycleJobDisposable(lifecycle)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_comics_item, container, false)
+        return binding.root
     }
 
     private val viewModelProvider by lazy {
@@ -41,6 +59,11 @@ class ComicsItemFragment: InjectableFragment(), InjectLoggedIn, ArchView<ComicsI
         viewModelProvider.get(ComicsItemPresenter::class.java)
 
     override fun event(event: ComicsItemInteractions) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return when(event) {
+            is ComicsItemInteractions.Item -> {
+                binding.src = event.image
+                binding.executePendingBindings()
+            }
+        }
     }
 }
